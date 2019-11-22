@@ -249,6 +249,20 @@ map2 _ []       = []
 map2 _ [_]      = []
 map2 f (a:b:xs) = f a b:map2 f xs
 
+-- 2つずつ処理するtakeWhile {{{2
+takeWhile2 :: (a -> a -> Bool) -> [a] -> [a]
+takeWhile2 _ []  = []
+takeWhile2 _ [x] = [x]
+takeWhile2 p (i:j:xs) =
+    if i `p` j then i : takeWhile2 p (j:xs) else [i]
+
+-- 2つずつ処理するdropWhile {{{2
+dropWhile2 :: (a -> a -> Bool) -> [a] -> [a]
+dropWhile2 _ []  = []
+dropWhile2 _ [i] = [i]
+dropWhile2 p (i:j:xs) =
+    if i `p` j then dropWhile2 p (j:xs) else i:j:xs
+
 -- 要素を交互に分割 {{{2
 alternateSplit :: [a] -> ([a],[a])
 alternateSplit = foldr (\x (l,r)-> (x:r,l)) ([],[])
