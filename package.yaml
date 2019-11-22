@@ -39,3 +39,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - atcoder
+    - hspec
