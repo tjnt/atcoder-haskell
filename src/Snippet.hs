@@ -247,7 +247,7 @@ zipWith' _ _ _ = []
 map2 :: (a -> a -> b) -> [a] -> [b]
 map2 _ []       = []
 map2 _ [_]      = []
-map2 f (a:b:xs) = f a b:map2 f xs
+map2 f (i:j:xs) = f i j : map2 f xs
 
 -- 2つずつ処理するtakeWhile {{{2
 takeWhile2 :: (a -> a -> Bool) -> [a] -> [a]
