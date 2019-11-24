@@ -357,7 +357,22 @@ deleteIndexOf i = reverse . foldl (\a (j,x) -> if i == j then a else x:a) [] . z
 --   where
 --     bfs' xs = xs ++ bfs' (concatMap next xs)
 
--- ２分探索
+-- ２分探索 {{{1
+--
+-- 数直範囲の２分探索
+--   f     算出関数
+--   t     探索対象の値
+--   (l,r) 探索範囲
+bsearch :: Integral a => (a -> a) -> a -> (a, a) -> a
+bsearch f t (l, r)  =
+    case f c of
+        x | x == t -> c
+          | l == c && c == r -> c
+          | x < t  -> bsearch f t (c+1, r)
+          | x > t  -> bsearch f t (l, c-1)
+  where
+    c = (l + r) `div` 2
+
 binarySearch :: (Integral i, Ix i, Ord e, IArray a e) => e -> a i e -> Maybe i
 binarySearch x a =
     let (b,e) = bounds a in bsearch b (e + 1)
