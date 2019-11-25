@@ -521,6 +521,22 @@ l1norm a b = fromIntegral . sum $ zipWith (\i j -> abs (i - j)) a b
 l2norm :: (Integral a, Floating b) => [a] -> [a] -> b
 l2norm a b = sqrt . fromIntegral . sum $ zipWith (\i j -> (i - j) ^ 2) a b
 
+-- 桁数取得 {{{1
+digitNum :: Integral a => a -> a
+digitNum = go 0
+  where
+    go i 0 = i
+    go i x = go (i+1) (x `div` 10)
+
+-- 桁数取得 (対数版) {{{1
+--   10^38くらいまでいける
+digitNumLogB :: Integral a => a -> a -> a
+digitNumLogB _ 0 = 0
+digitNumLogB b n = floor (logBase b' n' + 1)
+  where
+    b' = fromIntegral b :: Float
+    n' = fromIntegral n :: Float
+
 -- 数字和 {{{1
 digitSum :: Integral a => a -> a
 digitSum 0 = 0
