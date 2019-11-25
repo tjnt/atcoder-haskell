@@ -359,20 +359,6 @@ deleteIndexOf i = reverse . foldl (\a (j,x) -> if i == j then a else x:a) [] . z
 
 -- ２分探索 {{{1
 --
--- 数直範囲の２分探索
---   f     算出関数
---   t     探索対象の値
---   (l,r) 探索範囲
-bsearch :: Integral a => (a -> a) -> a -> (a, a) -> a
-bsearch f t (l, r)  =
-    case f c of
-        x | x == t -> c
-          | l == c && c == r -> c
-          | x < t  -> bsearch f t (c+1, r)
-          | x > t  -> bsearch f t (l, c-1)
-  where
-    c = (l + r) `div` 2
-
 binarySearch :: (Integral i, Ix i, Ord e, IArray a e) => e -> a i e -> Maybe i
 binarySearch x a =
     let (b,e) = bounds a in bsearch b (e + 1)
@@ -403,6 +389,17 @@ upperBound x a =
       | x < a!p   = bsearch b p
       | otherwise = bsearch (p + 1) e
       where p = (b + e) `div` 2
+
+-- ２分法
+--   f     判定条件
+--   (l,h) 探索範囲
+bisectionMethod :: Integral a => (a -> Bool) -> (a,a) -> a
+bisectionMethod f (l,h)
+  | h - l == 1 = l
+  | f m        = bisectionMethod f (m,h)
+  | otherwise  = bisectionMethod f (l,m)
+  where
+    m = l + (h-l) `div` 2
 
 -- モジュラー計算 {{{1
 -- import Data.Int (Int64)
