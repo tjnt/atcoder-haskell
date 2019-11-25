@@ -546,6 +546,15 @@ digitSum n = n `mod` 10 + digitSum (n `div` 10)
 digitSumS :: String -> Int
 digitSumS s = sum [read [c] | c <- show s]
 
+-- 繰り返し二乗法 {{{1
+--   nのp乗をmで割った余り
+powMod :: Integral a => a -> a -> a -> a
+powMod n p m
+  | p == 0    = 1
+  | odd p     = n * powMod n (p-1) m `mod` m
+  | otherwise = let t = powMod n (p `div` 2) m
+                 in (t^2) `mod` m
+
 -- nの倍数までの差 {{{1
 -- ex:
 --   multipleDiff 10 24 => 6
