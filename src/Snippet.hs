@@ -344,6 +344,13 @@ modifyIndexOf i v =
 deleteIndexOf :: Int -> [a] -> [a]
 deleteIndexOf i = reverse . foldl (\a (j,x) -> if i == j then a else x:a) [] . zip [0..]
 
+-- 数値のリストを結合
+concatIntList :: Integral a => [a] -> a
+concatIntList xs = go (length xs - 1) xs 0
+  where
+    go _ [] sum     = sum
+    go n (x:xs) sum = go (n-1) xs (sum + x * 10^n)
+
 -- 探索 {{{1
 -- dfs 深さ優先探索
 -- dfs :: (a -> [a]) -> a -> [a]
