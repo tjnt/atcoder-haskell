@@ -13,6 +13,7 @@ module Snippet where
 
 -- import modules {{{1
 import           Control.Monad
+import           Control.Monad.ST
 import           Control.Monad.Reader
 import           Control.Monad.RWS
 import           Control.Monad.State
@@ -115,6 +116,30 @@ arrayExample = do
     writeArray ma 2 'C'
     -- リスト変換
     print =<< getElems ma
+
+-- STArray with ST {{{1
+--   runSTArrayではSTArrayしか返却できない。
+--   これはSTArrayを使用してSTArray以外の結果を返却する例
+--   例として2で割り続けた後の合計を計算する
+-- import Control.Monad.ST
+-- import Data.Array.IArray
+-- import Data.Array.ST
+stArrayWithST n = let a = [0..n]
+                   in run $ listArray (0,length a-1) a
+  where
+    run :: Array Int Int -> Int
+    run a = runST $ thaw a >>= go
+    go :: STArray s Int Int -> ST s Int
+    go m = do
+        (b,e) <- getBounds m
+        forM_ [b..e] $ \i -> do
+            x <- readArray m i
+            writeArray m i (x`div`2)
+        es <- getElems m
+        case filter divable es of
+            [] -> return $ sum es
+            _  -> go m
+    divable n = n /= 0 && even n
 
 -- 状態系モナド使用例 {{{1
 
