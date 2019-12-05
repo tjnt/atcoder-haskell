@@ -239,6 +239,11 @@ otherExample = do
     -- 順列
     -- import Data.List
     let _ = permutations [1,2,3]
+    -- 冪集合
+    -- import Data.List
+    let _ = subsequences [1,2,3]
+    -- 直積
+    let _ = sequence [[1,2], [3,4], [5,6]]
     -- 組み合わせの生成
     -- ex: 0 or 1を3回選ぶ組み合わせのパターンを生成する
     let _ = replicateM 3 [0,1]
