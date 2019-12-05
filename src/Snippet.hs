@@ -542,15 +542,11 @@ divisor n = foldr f [] $ takeWhile ((<= n) . (^2)) [1..n]
 
 -- 順列の数 {{{1
 nPr :: Integral a => a -> a -> a
-nPr 0 _ = 0
-nPr _ 0 = 0
 nPr n r = product [(n - r + 1)..n]
 -- nPr n r = fact n `div` fact (n - r)
 
 -- 組み合わせの数 {{{1
 nCr :: Integral a => a -> a -> a
-nCr 0 _ = 0
-nCr _ 0 = 0
 nCr n r = nPr n r `div` product [1..r]
 -- nCr n r = nPr n r `div` fact r
 
