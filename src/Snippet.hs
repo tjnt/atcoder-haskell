@@ -441,7 +441,7 @@ bisectionMethod f (l,h)
 -- モジュラー計算 {{{1
 -- import Data.Int (Int64)
 modulus :: Int64
-modulus = 1000000007
+modulus = 10^9 + 7
 
 addMod, subMod, mulMod :: Int64 -> Int64 -> Int64
 addMod x y
@@ -474,8 +474,8 @@ fact n = product [1..n]
 fact' :: Integral a => a -> a
 fact' n = f n 1
   where
-    f 0 b  = b
-    f a !b = f (a - 1) (a * b)
+    f 0 b = b
+    f a b = b `seq` f (a - 1) (a * b)
 
 -- 繰り返し二乗法 {{{1
 --   nのp乗をmで割った余り
