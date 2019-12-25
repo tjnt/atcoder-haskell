@@ -463,16 +463,16 @@ isInteger :: RealFrac a => a -> Bool
 isInteger x = x == fromInteger (round x)
 
 -- 階乗 {{{1
-fact :: Integral a => a -> a
-fact n = product [1..n]
+-- fact :: Integral a => a -> a
+-- fact n = product [1..n]
 
 -- fact :: Integral a => a -> a
 -- fact 0 = 1
 -- fact n = n * fact (n - 1)
 
 -- 末尾再帰 + 正格評価 (速い)
-fact' :: Integral a => a -> a
-fact' n = f n 1
+fact :: Integral a => a -> a
+fact n = f n 1
   where
     f 0 b = b
     f a b = b `seq` f (a - 1) (a * b)
