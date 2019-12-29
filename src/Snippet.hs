@@ -117,6 +117,25 @@ arrayExample = do
     -- リスト変換
     print =<< getElems ma
 
+-- STArray の例 {{{1
+--   ABC004-C  Arrayへの変更を再帰的に行う例
+--   https://atcoder.jp/contests/abc004/tasks/abc004_3
+abc004c :: Int -> Array Int Int
+abc004c n =
+    let ary = listArray (1,6) [1..6] :: Array Int Int
+     in runSTArray $ thaw ary >>= go 0
+  where
+    go :: Int -> STArray s Int Int -> ST s (STArray s Int Int)
+    go i a 
+      | i == n = return a
+      | otherwise =
+          let x = i `mod` 5 + 1
+           in do l <- readArray a x
+                 r <- readArray a (x+1)
+                 writeArray a x r
+                 writeArray a (x+1) l
+                 go (i+1) a
+
 -- STArray with ST {{{1
 --   runSTArrayではSTArrayしか返却できない。
 --   これはSTArrayを使用してSTArray以外の結果を返却する例
