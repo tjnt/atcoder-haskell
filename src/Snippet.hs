@@ -575,8 +575,8 @@ nCr n r = nPr n r `div` product [1..r]
 -- nCr n r = nPr n r `div` fact r
 
 -- マンハッタン距離 {{{1
-l1norm :: (Integral a, Floating b) => [a] -> [a] -> b
-l1norm a b = fromIntegral . sum $ zipWith (\i j -> abs (i - j)) a b
+l1norm :: (Integral a) => [a] -> [a] -> a
+l1norm a b = sum $ zipWith (\i j -> abs (i - j)) a b
 
 -- ユークリッド距離 {{{1
 l2norm :: (Integral a, Floating b) => [a] -> [a] -> b
