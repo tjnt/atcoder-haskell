@@ -24,6 +24,7 @@ import           Data.Array.ST
 import           Data.Array.Unboxed
 import           Data.Bits
 import qualified Data.ByteString.Char8 as BS
+import           Data.Function
 import           Data.Int              (Int64)
 import           Data.List
 import           Data.Maybe            (fromJust)
@@ -269,6 +270,9 @@ otherExample = do
     -- n個の中から重複する組み合わせの数
     let n = 255
     let _ = n * (n - 1) `div` 2
+    -- minimumBy (maximumBy) のサンプル
+    -- ex: タプル配列から絶対値が最小のものを選択する
+    let _ = minimumBy (compare `on` (\(i,j) -> abs (i-j))) [(1,2),(3,4)]
     return ()
 
 -- リスト操作 {{{1
