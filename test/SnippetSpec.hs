@@ -52,3 +52,37 @@ spec = do
             dropWhile2 (<) [3,2,1] `shouldBe` [3,2,1]
         it "many element" $
             dropWhile2 (<) [1,2,3,2,1] `shouldBe` [3,2,1]
+
+    -- Heap
+
+    describe "min heap" $ do
+        let p = (<) :: HeapPolicy Int
+            h = fromList p [5,4,3,2,1]
+        it "construction" $
+            toList h `shouldBe` [1,2,3,4,5]
+        it "top" $
+            top  h `shouldBe` 1
+        it "push" $
+            toList (push 2 h) `shouldBe` [1,2,2,3,4,5]
+        it "pop" $
+            toList (pop h) `shouldBe` [2,3,4,5]
+        it "empty" $
+            toList (empty p) `shouldBe` []
+        it "isEmpty" $
+            isEmpty (empty p) `shouldBe` True
+
+    describe "max heap" $ do
+        let p = (>) :: HeapPolicy Int
+            h = fromList p [1,2,3,4,5]
+        it "construction" $
+            toList h `shouldBe` [5,4,3,2,1]
+        it "top" $
+            top  h `shouldBe` 5
+        it "push" $
+            toList (push 2 h) `shouldBe` [5,4,3,2,2,1]
+        it "pop" $
+            toList (pop h) `shouldBe` [4,3,2,1]
+        it "empty" $
+            toList (empty p) `shouldBe` []
+        it "isEmpty" $
+            isEmpty (empty p) `shouldBe` True
