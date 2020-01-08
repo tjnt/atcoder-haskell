@@ -568,6 +568,33 @@ divisor n = foldr f [] $ takeWhile ((<= n) . (^2)) [1..n]
       where
         (q, r) = n `divMod` x
 
+-- フィボナッチいろいろ {{{1
+
+-- 通常の再帰
+fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+
+-- 末尾再帰
+fibTail :: Int -> Int
+fibTail n = go n 0 1
+  where
+    go 0 a _ = a
+    go n a b = go (n-1) b (a+b)
+
+-- メモ化再帰
+fibMemo :: Int -> Int
+fibMemo n = m!n
+  where
+    m = listArray (0,n) (map go [0..n]) :: Array Int Int
+    go 0 = 0
+    go 1 = 1
+    go k = m!(k-1) + m!(k-2)
+
+-- 一行フィボナッチ
+fib1 = 1 : 1 : zipWith (+) fib1 (tail fib1)
+
 -- 順列の数 {{{1
 nPr :: Integral a => a -> a -> a
 nPr n r = product [(n - r + 1)..n]
