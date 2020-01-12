@@ -28,6 +28,7 @@ import           Data.Function
 import           Data.Int              (Int64)
 import           Data.List
 import           Data.Maybe            (fromJust)
+import qualified Data.Map as M
 
 -- 入力処理 {{{1
 inputExample :: IO ()
@@ -403,6 +404,14 @@ concatIntList xs = go (length xs - 1) xs 0
   where
     go _ [] sum     = sum
     go n (x:xs) sum = go (n-1) xs (sum + x * 10^n)
+
+-- マップ {{{1
+--
+-- valueをリストで格納するマップの生成
+mapValuesFromList :: Ord k => [(k,v)] -> M.Map k [v]
+mapValuesFromList []         = M.empty
+mapValuesFromList ((k,v):xs) = M.insertWith (\[a] b -> a:b) k [v]
+                             $ mapValuesFromList xs
 
 -- 探索 {{{1
 -- dfs 深さ優先探索
