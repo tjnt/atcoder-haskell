@@ -203,6 +203,15 @@ writerMonadExample = do
         -- 結果の返却
         return 1
 
+-- WriterモナドとMonoidでカウントアップ
+cntupWriter :: [Int] -> (Int,Int)
+cntupWriter a = let (s,c) = runWriter $ run a
+                 in (s, getSum c)
+  where
+    run :: [Int] -> Writer (Sum Int) Int
+    run []     = return 0
+    run (x:xs) = tell 1 >> (+) x <$> run xs
+
 -- State Monad {{{2
 stateMonadExample :: IO ()
 stateMonadExample = do
