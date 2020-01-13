@@ -291,7 +291,7 @@ otherExample = do
 combinations :: Int -> [a] -> [[a]]
 combinations 0 _  = [[]]
 combinations n xs = [ y:ys | y:xs' <- tails xs
-                           , ys <- combinations (n-1) xs' ]
+                    , ys <- combinations (n-1) xs' ]
 
 -- 旧バージョン
 -- combinations :: Int -> [a] -> [[a]]
