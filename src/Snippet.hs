@@ -43,7 +43,7 @@ inputExample = do
     _ <- map (map read . words) . lines <$> getContents :: IO [[Int]]
     -- 複数行の数値リストをタプルに変換
     _ <- map ((\[a,b] -> (a,b)) . (map read . words)) . lines
-         <$> getContents :: IO [(Int,Int)]
+     <$> getContents :: IO [(Int,Int)]
 
     -- 複数行の数値（Control.Monad）
     _ <- replicateM n readLn :: IO [Int]
@@ -59,19 +59,19 @@ inputExample = do
     _ <- map (fst . fromJust . BS.readInt) . BS.lines <$> BS.getContents
     -- 複数行の数値リスト
     _ <- map (map (fst . fromJust . BS.readInt) . BS.words) . BS.lines
-         <$> BS.getContents
+     <$> BS.getContents
     -- 複数行の数値リストをタプルに変換
     _ <- map ((\[a,b] -> (a,b)) . map (fst . fromJust . BS.readInt) . BS.words)
-         . BS.lines <$> BS.getContents
+       . BS.lines <$> BS.getContents
     -- 複数行の少数値リストをタプルに変換
     _ <- map ((\[a,b] -> (a,b)) . map ((read :: String -> Double) . BS.unpack) . BS.words)
-        . BS.lines <$> BS.getContents :: IO [(Double,Double)]
+       . BS.lines <$> BS.getContents :: IO [(Double,Double)]
 
     -- 迷路などの格子状データの読み出し
     [h,w] <- map read . words <$> getLine :: IO [Int]
     _ <- listArray ((0,0),(h-1,w-1))
-         . concatMap BS.unpack . BS.lines
-         <$> BS.getContents :: IO (Array (Int,Int) Char)
+       . concatMap BS.unpack . BS.lines
+     <$> BS.getContents :: IO (Array (Int,Int) Char)
 
     return ()
 
