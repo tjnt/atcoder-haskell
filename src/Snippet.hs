@@ -2,9 +2,8 @@
                 -fno-warn-unused-matches
                 -fno-warn-type-defaults
 #-}
-{-# LANGUAGE BangPatterns          #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE ViewPatterns          #-}
 
 -- Memo {{{1
 -- ghciで実行時間の出力
@@ -14,23 +13,23 @@ module Snippet where
 
 -- import modules {{{1
 import           Control.Monad
-import           Control.Monad.ST
 import           Control.Monad.Reader
 import           Control.Monad.RWS
+import           Control.Monad.ST
 import           Control.Monad.State
 import           Control.Monad.Writer
 import           Data.Array.IArray
 import           Data.Array.IO
 import           Data.Array.ST
 import           Data.Array.Unboxed
+import           Data.Bifunctor
 import           Data.Bits
 import qualified Data.ByteString.Char8 as BS
 import           Data.Function
 import           Data.Int              (Int64)
 import           Data.List
+import qualified Data.Map              as M
 import           Data.Maybe            (fromJust)
-import qualified Data.Map as M
-import           Data.Bifunctor
 import           Data.Sequence         (ViewL (..), (<|), (|>))
 import qualified Data.Sequence         as Q
 
@@ -132,7 +131,7 @@ abc004c n =
      in runSTArray $ thaw ary >>= go 0
   where
     go :: Int -> STArray s Int Int -> ST s (STArray s Int Int)
-    go i a 
+    go i a
       | i == n = return a
       | otherwise =
           let x = i `mod` 5 + 1
