@@ -4,6 +4,7 @@
 #-}
 {-# LANGUAGE BangPatterns          #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE ViewPatterns #-}
 
 -- Memo {{{1
 -- ghciで実行時間の出力
@@ -29,6 +30,9 @@ import           Data.Int              (Int64)
 import           Data.List
 import           Data.Maybe            (fromJust)
 import qualified Data.Map as M
+import           Data.Bifunctor
+import           Data.Sequence         (ViewL (..), (<|), (|>))
+import qualified Data.Sequence         as Q
 
 -- 入力処理 {{{1
 inputExample :: IO ()
@@ -795,6 +799,34 @@ adjL2adjM (b,e) xs = accumArray (flip const) 0 ((b,b),(e,e))
 
 -- edgesFromList :: Ord a => [(a,a)] -> [(a, a, [a])]
 -- edgesFromList xs = map (\(a,b) -> (a,a,b)) . M.toList $ mapFromList xs
+
+-- 典型問題 {{{1
+
+-- 迷路探索 BFS {{{2
+--
+-- import           Data.Array.IArray
+-- import           Data.Bifunctor
+-- import qualified Data.Map              as M
+-- import           Data.Sequence         (ViewL (..), (<|), (|>))
+-- import qualified Data.Sequence         as Q
+bfsMaze :: (Int,Int) -> (Int,Int) -> Array (Int,Int) Char -> Maybe Int
+bfsMaze s g a = go (M.insert s 0 M.empty) (s <| Q.empty)
+  where
+    ((ly,lx),(hy,hx)) = bounds a
+    go :: M.Map (Int,Int) Int -> Q.Seq (Int,Int) -> Maybe Int
+    go _ (Q.viewl -> EmptyL) = Nothing
+    go m (Q.viewl -> (p :< q))
+      | p == g    = Just (m M.! p)
+      | otherwise =
+          case next p of
+              [] -> go m q
+              ns -> let f a n = bimap (|> n) (M.insert n (succ (m M.! p))) a
+                        (q',m') = foldl f (q,m) ns
+                     in go m' q'
+      where
+        next (y,x) = [ (ny,nx) | (ny,nx) <- [(y+1,x), (y,x+1), (y-1,x), (y,x-1)]
+                     ,  ly <= ny && lx <= nx && ny <= hy && nx <= hx
+                     && a!(ny,nx) /= '#' && (ny,nx) `M.notMember` m ]
 
 -- {{{1
 -- vim:set foldmethod=marker:
