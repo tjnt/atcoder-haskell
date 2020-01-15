@@ -809,7 +809,9 @@ adjL2adjM (b,e) xs = accumArray (flip const) 0 ((b,b),(e,e))
 -- import           Data.Sequence         (ViewL (..), (<|), (|>))
 -- import qualified Data.Sequence         as Q
 bfsMaze :: (Int,Int) -> (Int,Int) -> Array (Int,Int) Char -> Maybe Int
-bfsMaze s g a = go (M.insert s 0 M.empty) (s <| Q.empty)
+bfsMaze s g a
+  | a!s == '#' || a!g == '#' = Nothing
+  | otherwise = go (M.insert s 0 M.empty) (s <| Q.empty)
   where
     ((ly,lx),(hy,hx)) = bounds a
     go :: M.Map (Int,Int) Int -> Q.Seq (Int,Int) -> Maybe Int
