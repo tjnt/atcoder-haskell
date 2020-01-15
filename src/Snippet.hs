@@ -6,8 +6,15 @@
 {-# LANGUAGE ViewPatterns          #-}
 
 -- Memo {{{1
+
 -- ghciで実行時間の出力
 -- :set +s
+
+-- プロファイルのとり方
+-- ビルド
+-- stack ghc -- -O2 -prof -fprof-auto xxx.hs
+-- 実行
+-- ./xxx +RTS -p <in
 
 module Snippet where
 
