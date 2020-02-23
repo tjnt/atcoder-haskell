@@ -605,6 +605,14 @@ divisor n = foldr f [] $ takeWhile ((<= n) . (^2)) [1..n]
       where
         (q, r) = n `divMod` x
 
+-- 素因数分解 {{{1
+factorization :: Integral a => a -> [a]
+factorization 1 = []
+factorization n = v : factorization (n `div` v)
+  where
+    factors x = [i | i <- [1..x], x `mod` i == 0]
+    v = factors n !! 1
+
 -- フィボナッチいろいろ {{{1
 
 -- 通常の再帰
