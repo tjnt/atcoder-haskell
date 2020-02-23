@@ -494,16 +494,34 @@ bisectionMethod f (l,h)
 modulus :: Int64
 modulus = 10^9 + 7
 
-addMod, subMod, mulMod :: Int64 -> Int64 -> Int64
+addMod, subMod, mulMod, remMod :: Int64 -> Int64 -> Int64
 addMod x y
   | x + y >= modulus = x + y - modulus
   | otherwise        = x + y
 
 subMod x y
-  | x - y < modulus = x - y + modulus
-  | otherwise       = x - y
+  | x < y     = x - y + modulus
+  | otherwise = x - y
 
 mulMod x y = (x * y) `rem` modulus
+
+remMod x y = x `mulMod` invMod y
+
+-- 繰り返し二乗法 {{{1
+--   nのp乗をmで割った余り
+powMod :: Int64 -> Int64 -> Int64
+powMod n p
+  | p == 0    = 1
+  | odd p     = n * powMod n (p-1) `mod` modulus
+  | otherwise = let t = powMod n (p `div` 2)
+                 in (t^2) `mod` modulus
+
+-- 逆元
+invMod :: Int64 -> Int64
+invMod n = powMod n (modulus - 2)
+
+prodMod :: [Int64] -> Int64
+prodMod = foldr mulMod 1
 
 -- 切り上げ割り算 {{{1
 ceilDiv :: Integral a => a -> a -> a
@@ -527,15 +545,6 @@ fact n = f n 1
   where
     f 0 b = b
     f a b = b `seq` f (a - 1) (a * b)
-
--- 繰り返し二乗法 {{{1
---   nのp乗をmで割った余り
-powMod :: Integral a => a -> a -> a -> a
-powMod n p m
-  | p == 0    = 1
-  | odd p     = n * powMod n (p-1) m `mod` m
-  | otherwise = let t = powMod n (p `div` 2) m
-                 in (t^2) `mod` m
 
 -- 素数生成 {{{1
 -- primes :: Integral a => a -> [a]
@@ -633,6 +642,8 @@ nCr :: Integral a => a -> a -> a
 nCr n r = product [(n-r+1)..n] `div` product [1..r]
 -- nCr n r = nPr n r `div` product [1..r]
 -- nCr n r = nPr n r `div` fact r
+
+nCrMod n r = prodMod [(n-r+1)..n] `remMod` prodMod [1..r]
 
 -- マンハッタン距離 {{{1
 l1norm :: (Integral a) => [a] -> [a] -> a
