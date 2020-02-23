@@ -630,7 +630,8 @@ nPr n r = product [(n - r + 1)..n]
 
 -- 組み合わせの数 {{{1
 nCr :: Integral a => a -> a -> a
-nCr n r = nPr n r `div` product [1..r]
+nCr n r = product [(n-r+1)..n] `div` product [1..r]
+-- nCr n r = nPr n r `div` product [1..r]
 -- nCr n r = nPr n r `div` fact r
 
 -- マンハッタン距離 {{{1
