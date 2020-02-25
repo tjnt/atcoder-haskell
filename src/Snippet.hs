@@ -568,9 +568,8 @@ isPrime n
   | n <= 2    = n == 2
   | otherwise = odd n && f 3
   where
-    f i
-      | i^2 > n   = True
-      | otherwise = n `rem` i /= 0 && f (i+2)
+    f i | i^2 > n   = True
+        | otherwise = n `rem` i /= 0 && f (i+2)
 
 -- 素数判定用配列 {{{1
 primesArray :: Int -> Array Int Bool
