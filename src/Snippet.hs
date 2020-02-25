@@ -711,7 +711,11 @@ shift1 = shift 1
 
 -- 条件を満たした場合、指定位置のbitを立てる
 bitOn :: Bool -> Int -> Int -> Int
-bitOn c i x = if c then x .|. shift1 i else x
+bitOn c i x = if c then setBit x i else x
+
+-- 条件を満たした場合、指定位置のbitを落とす
+bitOff :: Bool -> Int -> Int -> Int
+bitOff c i x = if c then clearBit x i else x
 
 -- Bool値のリストをビット列に変換
 conditionsBit :: [Bool] -> Int
