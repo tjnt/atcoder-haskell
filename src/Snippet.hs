@@ -718,6 +718,26 @@ conditionsBit :: [Bool] -> Int
 conditionsBit xs =
     foldl' (\a (i,c) -> bitOn c i a) 0 $ zip [0..] xs
 
+--- bit全探索 {{{1
+--  与えられた条件に合致する組み合わせを全探索して返却する O(2^n)
+--  引数のarrayのインデックスは0オリジン
+--  ex:
+--    aの中から総和がwとなる組み合わせを列挙する例
+--    bitSearch (\xs -> sum xs == w) a
+bitSearch :: ([a] -> Bool) -> Array Int a -> [[a]]
+bitSearch f a = go1 (0 :: Int)
+  where
+    n = succ . snd $ bounds a
+    go1 b
+      | b == shift 1 n = []
+      | otherwise = let xs = go2 b 0
+                     in if f xs then xs : go1 (b+1) else go1 (b+1)
+    go2 b i
+      | i  == n   = []
+      | bi /= 0   = (a!i) : go2 b (i+1)
+      | otherwise = go2 b (i+1)
+      where bi = b .&. shift 1 i
+
 -- Heap {{{1
 --
 type HeapPolicy a = (a -> a -> Bool)
