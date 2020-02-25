@@ -651,6 +651,8 @@ nCr n r = product [(n-r+1)..n] `div` product [1..r]
 -- nCr n r = nPr n r `div` product [1..r]
 -- nCr n r = nPr n r `div` fact r
 
+-- mod付き
+nCrMod :: Int64 -> Int64 -> Int64
 nCrMod n r = prodMod [(n-r+1)..n] `remMod` prodMod [1..r]
 
 -- マンハッタン距離 {{{1
