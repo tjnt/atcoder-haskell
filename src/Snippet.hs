@@ -722,6 +722,15 @@ conditionsBit :: [Bool] -> Int
 conditionsBit xs =
     foldl' (\a (i,c) -> bitOn c i a) 0 $ zip [0..] xs
 
+-- bitの立っているインデックスをリストで返す {{{1
+bit2List :: Int -> Int -> [Int]
+bit2List b n = go 0
+  where
+    go i | i  == n   = []
+         | bi /= 0   = i : go (i+1)
+         | otherwise = go (i+1)
+      where bi = b .&. shift 1 i
+
 --- bit全探索 {{{1
 --  与えられた条件に合致する組み合わせを全探索して返却する O(2^n)
 --  引数のarrayのインデックスは0オリジン
