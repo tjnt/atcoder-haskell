@@ -523,6 +523,13 @@ invMod n = powMod n (modulus - 2)
 prodMod :: [Int64] -> Int64
 prodMod = foldr mulMod 1
 
+-- 四捨五入 {{{1
+-- half upの四捨五入 (中間値は切り上げ)
+-- Haskellのroundはhalf even (中間値は偶数を返す)
+halfUp :: (RealFrac a, Integral b) => a -> b
+halfUp x = let (m,d) = properFraction x
+            in if d < 0.5 then m else m + 1
+
 -- 切り上げ割り算 {{{1
 ceilDiv :: Integral a => a -> a -> a
 ceilDiv t s = (t + s - 1) `div` s
