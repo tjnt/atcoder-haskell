@@ -758,6 +758,33 @@ bitSearch f a = go1 (0 :: Int)
       | otherwise = go2 b (i+1)
       where bi = b .&. shift 1 i
 
+-- UnionFind {{{1
+--
+-- import Data.Array.ST
+-- import Control.Monad.ST
+newtype UnionFind s = UnionFind (STArray s Int Int)
+
+newUnionFind :: (Int,Int) -> [Int] -> ST s (UnionFind s)
+newUnionFind ix xs = UnionFind <$> newListArray ix xs
+
+root :: UnionFind s -> Int -> ST s Int
+root (UnionFind a) x = do
+    p <- readArray a x
+    if p == x then return p
+              else do rp <- root (UnionFind a) p
+                      writeArray a x rp
+                      return rp
+
+same :: UnionFind s -> Int -> Int -> ST s Bool
+same u x y = (==) <$> root u x <*> root u y
+
+unite :: UnionFind s -> Int -> Int -> ST s ()
+unite u@(UnionFind a) x y = do
+    rx <- root u x
+    ry <- root u y
+    when (rx /= ry) $ do
+        writeArray a rx ry
+
 -- Heap {{{1
 --
 type HeapPolicy a = (a -> a -> Bool)
