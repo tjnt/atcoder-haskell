@@ -1,8 +1,8 @@
 .stack-work/
-src/in
 work/
 wrong/
 trying/in
 atcoder.cabal
 stack.yaml.lock
 *~
+in
