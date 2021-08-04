@@ -20,8 +20,8 @@ module Snippet where
 
 -- import modules {{{1
 import           Control.Monad
-import           Control.Monad.Reader
 import           Control.Monad.RWS
+import           Control.Monad.Reader
 import           Control.Monad.ST
 import           Control.Monad.State
 import           Control.Monad.Writer
@@ -39,7 +39,7 @@ import qualified Data.Map              as M
 import           Data.Maybe            (fromJust)
 import           Data.Sequence         (ViewL (..), (<|), (|>))
 import qualified Data.Sequence         as Q
-import qualified Data.Vector.Mutable as MV
+import qualified Data.Vector.Mutable   as MV
 
 -- 入力処理 {{{1
 inputExample :: IO ()
