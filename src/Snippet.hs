@@ -39,6 +39,7 @@ import qualified Data.Map              as M
 import           Data.Maybe            (fromJust)
 import           Data.Sequence         (ViewL (..), (<|), (|>))
 import qualified Data.Sequence         as Q
+import qualified Data.Vector.Mutable as MV
 
 -- 入力処理 {{{1
 inputExample :: IO ()
@@ -757,6 +758,18 @@ bitSearch f a = go1 (0 :: Int)
       | bi /= 0   = (a!i) : go2 b (i+1)
       | otherwise = go2 b (i+1)
       where bi = b .&. shift 1 i
+
+-- Bucket {{{1
+--
+-- import qualified Data.Vector.Mutable as MV
+-- import Control.Monad.ST
+bucket :: Int -> [Int] -> Int
+bucket s l = runST $ MV.replicate s 0 >>= \v -> go v l
+  where
+    go v []     = undefined -- バケットを使い結果を返す
+    go v (x:xs) = do
+        MV.modify v succ x
+        go v xs
 
 -- UnionFind {{{1
 --
