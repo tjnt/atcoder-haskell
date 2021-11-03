@@ -412,7 +412,7 @@ genPart n a = [(take n . drop i) a | i <- [0..length a - n]]
 -- リストの指定された位置の要素を変更 {{{2
 modifyIndexOf :: Int -> a -> [a] -> [a]
 modifyIndexOf i v =
-    map (\(j,x) -> if i == j then v else x) . zip [0..]
+    zipWith (\ j x -> (if i == j then v else x)) [0 .. ] 
 
 -- リストの指定された位置の要素を削除 {{{2
 deleteIndexOf :: Int -> [a] -> [a]
@@ -424,6 +424,25 @@ concatIntList xs = go (length xs - 1) xs 0
   where
     go _ [] sum     = sum
     go n (x:xs) sum = go (n-1) xs (sum + x * 10^n)
+
+-- swap {{{2
+swap :: Int -> Int -> [a] -> [a]
+swap i j a = go 0 a
+  where
+    go _ [] = []
+    go k (x:xs)
+      | k == i = (a !! j) : go (succ k) xs
+      | k == j = (a !! i) : go (succ k) xs
+      | otherwise = x : go (succ k) xs
+
+swapA :: Ix i => i -> i -> Array i a -> Array i a
+swapA i j a = runSTArray $ do
+    m <- thaw a
+    x <- readArray m i
+    y <- readArray m j
+    writeArray m j x
+    writeArray m i y
+    return m
 
 -- マップ {{{1
 --
@@ -883,7 +902,7 @@ dfsA p g = concatMap (next [p]) (g!p)
 
 -- 隣接リストから隣接行列への変換
 adjL2adjM :: (Int,Int) -> [(Int,[Int])] -> Array (Int,Int) Int
-adjL2adjM (b,e) xs = accumArray (flip const) 0 ((b,b),(e,e))
+adjL2adjM (b,e) xs = accumArray (const id) 0 ((b,b),(e,e))
                    $ concatMap f xs
   where f (i,vs) = map (\j -> ((i,j),1)) vs
 
